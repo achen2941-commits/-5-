@@ -3,282 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>顺德菜馆(华盖路店) - 寻味顺德</title>
+    <title>顺德菜馆 - 寻味顺德</title>
     <style>
-        /* --- 全局优化 --- */
         :root {
-            --primary-color: #c0392b; /* 更沉稳的砖红色 */
-            --accent-color: #f39c12;  /* 金色点缀 */
-            --bg-color: #fdfbf7;      /* 暖米色背景，护眼且高级 */
+            --primary-color: #c0392b;
             --text-color: #2c3e50;
-            --card-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            --bg-color: #fdfbf7;
         }
 
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             margin: 0; 
             padding: 0; 
             color: var(--text-color); 
-            background-color: var(--bg-color); /* 使用暖色背景 */
-            line-height: 1.8; 
+            background-color: var(--bg-color); 
         }
 
-        h1, h2, h3, .logo {
-            font-family: "Songti SC", "SimSun", serif; /* 使用宋体，增加传统韵味 */
-        }
-
-        a { text-decoration: none; color: inherit; transition: 0.3s; }
-        ul { list-style: none; padding: 0; }
+        h1, h2, h3, .logo { font-family: "Songti SC", "SimSun", serif; margin: 0; }
+        a { text-decoration: none; color: inherit; }
         
         .container { width: 90%; max-width: 1100px; margin: auto; }
 
-        /* --- 导航栏优化 --- */
-        header { 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(10px); /* 毛玻璃效果 */
-            padding: 1rem 0; 
-            position: fixed; 
-            width: 100%; 
-            top: 0; 
-            z-index: 1000; 
-            box-shadow: 0 2px 15px rgba(0,0,0,0.05); 
-        }
+        /* --- 导航 --- */
+        header { background: #fff; padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .nav-flex { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.6rem; font-weight: bold; color: var(--primary-color); letter-spacing: 1px; }
-        nav ul { display: flex; gap: 30px; }
-        nav a { font-weight: 500; font-size: 1.1rem; }
-        nav a:hover { color: var(--primary-color); }
-
-        /* --- 海报区优化 --- */
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+        nav ul { display: flex; gap: 20px; list-style: none; padding: 0; margin: 0; }
+        
+        /* --- 海报 --- */
         .hero {
-            height: 70vh; /* 增加高度，更有气势 */
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 120px 20px 80px;
             text-align: center;
-            margin-top: 60px;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('你的背景图.jpg'); 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('你的背景图.jpg'); 
             background-size: cover;
-            background-position: center;
             color: white;
-            position: relative;
         }
-        .hero-content { z-index: 1; animation: fadeIn 1.5s ease-out; }
-        .hero h1 { font-size: 3.5rem; margin: 0 0 20px; text-shadow: 2px 2px 10px rgba(0,0,0,0.3); }
-        .hero p { font-size: 1.5rem; margin-bottom: 30px; font-weight: 300; }
+        .hero h1 { font-size: 2rem; margin-bottom: 15px; }
+        .btn { background: var(--primary-color); color: white; padding: 12px 30px; border-radius: 50px; font-weight: bold; display: inline-block; margin-top: 20px; }
+
+        /* --- 图片版菜单 (核心修改) --- */
+        .menu-section { padding: 60px 0; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 40px; }
         
-        .btn { 
-            background: var(--primary-color); 
-            color: white; 
-            padding: 15px 35px; 
-            border-radius: 50px; /* 圆角按钮更现代 */
-            font-size: 1.1rem;
-            font-weight: bold; 
-            box-shadow: 0 4px 15px rgba(192, 57, 43, 0.4);
-            display: inline-block;
-        }
-        .btn:hover { 
-            background: #a93226; 
-            transform: translateY(-2px); 
-            box-shadow: 0 6px 20px rgba(192, 57, 43, 0.6);
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 40px; 
         }
 
-        /* --- 菜单区优化 --- */
-        .menu-section { padding: 80px 0; text-align: center; }
-        .section-title { font-size: 2.5rem; color: var(--text-color); margin-bottom: 15px; position: relative; display: inline-block; }
-        .section-title::after {
-            content: ''; display: block; width: 60px; height: 3px; background: var(--accent-color); margin: 10px auto 0;
-        }
-        .section-desc { color: #7f8c8d; margin-bottom: 50px; font-size: 1.1rem; }
-        
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
-        
-        .menu-item { 
-            background: #fff; 
-            border-radius: 15px; /* 大圆角 */
-            overflow: hidden; 
-            transition: all 0.4s ease; 
-            box-shadow: var(--card-shadow); 
-            border: 1px solid rgba(0,0,0,0.03);
-        }
-        .menu-item:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15); 
+        .menu-card {
+            position: relative; /* 关键：让文字可以绝对定位在图片上 */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            height: 400px; /* 固定高度，保证整齐 */
         }
         
-        .menu-img { width: 100%; height: 240px; object-fit: cover; transition: transform 0.5s ease; }
-        .menu-item:hover .menu-img { transform: scale(1.05); } /* 图片悬停放大效果 */
-        
-        .menu-info { padding: 25px; text-align: left; }
-        .menu-info h3 { margin: 0 0 10px; font-size: 1.4rem; color: var(--text-color); }
-        .menu-info p { color: #666; font-size: 0.95rem; margin-bottom: 15px; }
-        .price { color: var(--primary-color); font-size: 1.4rem; font-weight: bold; display: block; }
+        .menu-card:hover { transform: scale(1.02); }
 
-        /* --- 推荐列表优化 --- */
-        .features { background: #fff; padding: 60px 0; }
-        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; text-align: center; }
-        .feature-item { padding: 20px; }
-        .feature-icon { font-size: 3rem; margin-bottom: 20px; display: block; }
-        .feature-item h3 { font-size: 1.3rem; margin-bottom: 10px; }
-
-        /* --- 信息区优化 --- */
-        .info-section { 
-            background: #2c3e50; 
-            color: white; 
-            padding: 60px 0; 
-            text-align: center; 
-            background-image: url('background.jpg'); /* 可以加个淡淡的纹理 */
-            background-size: cover;
-        }
-        .info-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 50px; margin-top: 30px; }
-        .info-item { flex: 1; min-width: 250px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; backdrop-filter: blur(5px); }
-        .info-item h3 { color: var(--accent-color); font-size: 1.5rem; margin-bottom: 15px; }
-        .info-item p { margin: 5px 0; font-size: 1.1rem; }
-
-        footer { background: #222; color: #666; text-align: center; padding: 30px 0; font-size: 0.9rem; }
-
-        /* 简单的淡入动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .menu-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 关键：图片填满容器且不变形 */
         }
 
-        /* 手机端适配 */
+        .menu-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); /* 底部黑色渐变遮罩，保证文字看清 */
+            padding: 30px 20px 20px;
+            color: white;
+        }
+
+        .menu-overlay h3 { font-size: 1.5rem; margin-bottom: 5px; }
+        .menu-overlay p { font-size: 0.9rem; opacity: 0.9; margin-bottom: 10px; }
+        .price { color: #f39c12; font-size: 1.3rem; font-weight: bold; }
+
+        /* --- 特色 --- */
+        .features { background: #fff; padding: 60px 0; text-align: center; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .feature-img { width: 100%; max-width: 140px; height: auto; margin: 0 auto 15px; display: block; border-radius: 16px; object-fit: cover; }
+
+        /* --- 底部 --- */
+        .info-section { background: #2c3e50; color: white; padding: 60px 0; text-align: center; }
+        .info-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 30px; }
+        .info-item { flex: 1; min-width: 250px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+
+        /* --- 手机端 --- */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
             .nav-flex { flex-direction: column; gap: 10px; }
-            nav ul { gap: 15px; font-size: 0.9rem; }
+            .menu-grid { grid-template-columns: 1fr; gap: 30px; } /* 手机端单列大图 */
+            .menu-card { height: 350px; } /* 手机端稍微调低一点高度 */
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. 导航栏 -->
     <header>
         <div class="container nav-flex">
             <div class="logo">🥢 顺德菜馆</div>
-            <nav>
-                <ul>
-                    <li><a href="#home">首页</a></li>
-                    <li><a href="#menu">必点菜</a></li>
-                    <li><a href="#features">特色</a></li>
-                    <li><a href="#info">导航</a></li>
-                </ul>
-            </nav>
+            <nav><ul><li><a href="#home">首页</a></li><li><a href="#menu">必点菜</a></li><li><a href="#info">导航</a></li></ul></nav>
         </div>
     </header>
 
-    <!-- 2. 海报区 -->
     <section id="home" class="hero">
-        <div class="container hero-content">
+        <div class="container">
             <h1>食在顺德，味在华盖路</h1>
-            <p>地道顺德风味 · 顺德鱼生 · 桑拿鸡</p>
-            <p style="font-size: 1.2rem; opacity: 0.9;">人均 ¥76 · 本地人爱吃的老字号</p>
-            <br>
-            <a href="#info" class="btn">查看地址导航</a>
+            <p>地道顺德风味 · 鲜味十足</p>
+            <a href="#menu" class="btn">查看招牌菜</a>
         </div>
     </section>
 
-    <!-- 3. 招牌菜单 -->
+    <!-- 图片版菜单 -->
     <section id="menu" class="menu-section">
         <div class="container">
             <h2 class="section-title">招牌必点</h2>
-            <p class="section-desc">精选顺德地道食材，还原传统镬气</p>
-            
             <div class="menu-grid">
-                <!-- 菜品 1 -->
-                <div class="menu-item">
-                    <img src="fish.jpg" alt="一鱼五吃" class="menu-img">
-                    <div class="menu-info">
-                        <h3>一鱼五吃</h3>
-                        <p>顺德经典吃法：鱼生爽脆、鱼骨酥炸、拆鱼羹鲜美，一鱼多吃，尽尝鱼之百味。</p>
+                
+                <!-- 菜品 1：顺德鱼生 -->
+                <div class="menu-card">
+                    <!-- 请替换下面的 src 为你的鱼生图片 -->
+                    <img src="fish.jpg" alt="顺德鱼生" class="menu-img">
+                    <div class="menu-overlay">
+                        <h3>顺德鱼生</h3>
+                        <p>晶莹剔透，佐以柠檬叶、蒜片等十几种配料，口感丰富，鲜甜爽滑。</p>
                         <span class="price">时价</span>
                     </div>
                 </div>
-                <!-- 菜品 2 -->
-                <div class="menu-item">
+
+                <!-- 菜品 2：桑拿鸡 -->
+                <div class="menu-card">
                     <img src="chicken.jpg" alt="招牌桑拿鸡" class="menu-img">
-                    <div class="menu-info">
+                    <div class="menu-overlay">
                         <h3>招牌桑拿鸡</h3>
-                        <p>现切现蒸，保留鸡肉原汁原味，皮爽肉滑，搭配秘制蘸料，鲜味十足。</p>
+                        <p>现切现蒸，保留鸡肉原汁原味，皮爽肉滑，鲜嫩多汁。</p>
                         <span class="price">¥88 起</span>
                     </div>
                 </div>
-                <!-- 菜品 3 -->
-                <div class="menu-item">
+
+                <!-- 菜品 3：凉拌鱼皮 -->
+                <div class="menu-card">
                     <img src="cold_mixed_fish_skin.jpg" alt="凉拌鱼皮" class="menu-img">
-                    <div class="menu-info">
+                    <div class="menu-overlay">
                         <h3>凉拌鱼皮</h3>
-                        <p>爽脆可口，秘制酱汁调味，花生米香脆，是开胃首选的前菜。</p>
+                        <p>爽脆可口，秘制酱汁调味，花生米香脆，开胃首选。</p>
                         <span class="price">¥38</span>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
 
-    <!-- 4. 特色推荐 -->
-    <section id="features" class="features">
+    <section class="features">
         <div class="container">
             <h2 class="section-title">老饕推荐</h2>
-            <p class="section-desc">除了大菜，这些地道小吃也不容错过</p>
             <div class="feature-grid">
-                <div class="feature-item">
-                    <span class="feature-icon">🥣</span>
-                    <h3>双皮奶</h3>
-                    <p>水牛奶制作，奶香浓郁，口感顺滑</p>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🍚</span>
-                    <h3>伦教糕</h3>
-                    <p>清甜爽滑，酸甜适口，百年传统糕点</p>
-                </div>
-                <div class="feature-item">
-                    <span class="feature-icon">🥟</span>
-                    <h3>陈村粉</h3>
-                    <p>薄、爽、滑、软，米香浓郁，排骨蒸粉一绝</p>
-                </div>
+                <div><img src="doupi.jpg" alt="双皮奶" class="feature-img"><h3>双皮奶</h3></div>
+                <div><img src="lengjiaogao.jpg" alt="伦教糕" class="feature-img"><h3>伦教糕</h3></div>
+                <div><img src="chencunfen.jpg" alt="陈村粉" class="feature-img"><h3>陈村粉</h3></div>
             </div>
         </div>
     </section>
 
-    <!-- 5. 探店信息 -->
     <section id="info" class="info-section">
         <div class="container">
             <h2 class="section-title" style="color:white;">探店指南</h2>
             <div class="info-grid">
-                <div class="info-item">
-                    <h3>📍 地址</h3>
-                    <p>佛山市顺德区大良华盖路49号</p>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">(近清晖园，地铁3号线大良钟楼站E出口)</p>
-                </div>
-                <div class="info-item">
-                    <h3>⏰ 营业时间</h3>
-                    <p>07:00 - 23:30</p>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">全天供应美味，夜宵好去处</p>
-                </div>
-                <div class="info-item">
-                    <h3>💰 人均消费</h3>
-                    <p>¥76/人</p>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">丰俭由人，性价比极高</p>
-                </div>
-                <div class="info-item">
-                    <h3>📞 联系方式</h3>
-                    <p>陈先生 13702341889</p>
-                    <p style="font-size: 0.9rem; opacity: 0.8;">欢迎电话预订或咨询</p>
-                </div>
+                <div class="info-item"><h3>📍 地址</h3><p>佛山市顺德区大良华盖路49号</p></div>
+                <div class="info-item"><h3>⏰ 时间</h3><p>07:00 - 23:30</p></div>
+                <div class="info-item"><h3>📞 联系</h3><p>陈先生 137-0234-1889</p></div>
             </div>
         </div>
     </section>
 
-    <!-- 6. 页脚 -->
-    <footer>
-        <div class="container">
-            <p>© 2026 顺德菜馆(华盖路店) 版权所有</p>
-            <p>寻味顺德，不虚此行</p>
-        </div>
-    </footer>
+    <footer><p style="text-align:center; padding: 20px; color:#888;">© 2026 顺德菜馆</p></footer>
 
-    
 </body>
 </html>
