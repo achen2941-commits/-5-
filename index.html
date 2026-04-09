@@ -130,47 +130,33 @@
 
         /* --- 手机端按键和布局优化 --- */
         @media (max-width: 600px) {
-            /* 给分页留出固定区域，避免遮挡内容 */
-            .menu-section .container { padding-bottom: 120px; }
+            /* 隐藏上方的每页显示 / 跳转控件，避免界面杂乱 */
+            .menu-controls { display: none; }
 
-            /* 固定底部分页控件，便于一只手操作 */
+            /* 保持分页在内容流中（非固定），放在列表下方 */
             .pagination {
-                position: fixed;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(255,255,255,0.98);
+                position: static;
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
                 gap: 8px;
-                padding: 10px 12px;
-                box-shadow: 0 -6px 18px rgba(0,0,0,0.08);
-                z-index: 1001;
+                padding: 12px 0;
+                margin-top: 18px;
+                background: transparent;
+                box-shadow: none;
+                z-index: auto;
             }
 
             .pagination button {
-                flex: 1 1 auto;
-                padding: 12px 14px;
+                padding: 10px 14px;
                 margin: 0 6px;
-                border-radius: 10px;
+                border-radius: 8px;
                 font-size: 1rem;
             }
 
             .pagination span {
-                flex: 0 0 auto;
                 font-size: 0.95rem;
                 white-space: nowrap;
-            }
-
-            /* 将上方的分页/跳转控件从横排改为竖排，便于触摸 */
-            .menu-controls { flex-direction: column; align-items: stretch; gap: 10px; }
-            .menu-controls > div, .menu-controls > * { width: 100%; }
-            .menu-controls select, .menu-controls input[type="number"], .menu-controls button {
-                width: 100%;
-                box-sizing: border-box;
-                font-size: 1rem;
-                padding: 10px 12px;
             }
 
             /* 让 hero 的按钮在手机上更容易点击 */
@@ -243,7 +229,7 @@
         <div class="container">
             <h2 class="section-title" style="color:white;">探店指南</h2>
             <div class="info-grid">
-                <div class="info-item"><h3>📍 地址</h3><p>佛山市顺德区大良华盖路49号</p></div>
+                <div class="info-item"><h3>📍 地址</h3><p>佛山市顺德区大良华盖路49号 地铁三号线钟楼公园e出口</p></div>
                 <div class="info-item"><h3>⏰ 时间</h3><p>9:00 - 22:30</p></div>
                 <div class="info-item"><h3>📞 联系</h3><p>陈先生 137-0234-1889</p></div>
             </div>
