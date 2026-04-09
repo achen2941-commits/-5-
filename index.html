@@ -127,6 +127,58 @@
             font-size: 1rem;
             margin: 0 20px;
         }
+
+        /* --- 手机端按键和布局优化 --- */
+        @media (max-width: 600px) {
+            /* 给分页留出固定区域，避免遮挡内容 */
+            .menu-section .container { padding-bottom: 120px; }
+
+            /* 固定底部分页控件，便于一只手操作 */
+            .pagination {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(255,255,255,0.98);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 8px;
+                padding: 10px 12px;
+                box-shadow: 0 -6px 18px rgba(0,0,0,0.08);
+                z-index: 1001;
+            }
+
+            .pagination button {
+                flex: 1 1 auto;
+                padding: 12px 14px;
+                margin: 0 6px;
+                border-radius: 10px;
+                font-size: 1rem;
+            }
+
+            .pagination span {
+                flex: 0 0 auto;
+                font-size: 0.95rem;
+                white-space: nowrap;
+            }
+
+            /* 将上方的分页/跳转控件从横排改为竖排，便于触摸 */
+            .menu-controls { flex-direction: column; align-items: stretch; gap: 10px; }
+            .menu-controls > div, .menu-controls > * { width: 100%; }
+            .menu-controls select, .menu-controls input[type="number"], .menu-controls button {
+                width: 100%;
+                box-sizing: border-box;
+                font-size: 1rem;
+                padding: 10px 12px;
+            }
+
+            /* 让 hero 的按钮在手机上更容易点击 */
+            .hero .btn { padding: 14px 22px; font-size: 1rem; border-radius: 12px; }
+
+            /* 卡片高度在小屏上略降，利于可视化 */
+            .menu-card { height: 300px; }
+        }
     </style>
 </head>
 <body>
@@ -151,7 +203,7 @@
         <div class="container">
             <h2 class="section-title">招牌必点</h2>
 
-            <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+            <div class="menu-controls" style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
                 <div>
                     每页显示: 
                     <select id="items-per-page">
@@ -203,7 +255,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const dishes = [
-                {img:'fish.jpg', title:'顺德鱼生', desc:'晶莹剔透，佐以柠檬叶、蒜片等十几种配料，口感丰富，鲜甜爽滑。', price:'48'},
+                {img:'fish.jpg', title:'顺德鱼生', desc:'晶莹剔透，佐以柠檬叶、蒜片等十几种配料，口感丰富，鲜甜爽滑。', price:'¥48'},
                 {img:'chicken.jpg', title:'招牌桑拿鸡', desc:'现切现蒸，保留鸡肉原汁原味，皮爽肉滑，鲜嫩多汁。', price:'¥48 起'},
                 {img:'cold_mixed_fish_skin.jpg', title:'凉拌鱼皮', desc:'爽脆可口，秘制酱汁调味，花生米香脆，开胃首选。', price:'¥28'},
                 {img:'doupi.jpg', title:'双皮奶', desc:'顺德传统甜品，口感细腻，香甜可口。', price:'¥13'},
