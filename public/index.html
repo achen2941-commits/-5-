@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>顺德菜馆 - 寻味顺德</title>
+    <style>
+        :root {
+            --primary-color: #c0392b;
+            --text-color: #2c3e50;
+            --bg-color: #fdfbf7;
+        }
+
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            color: var(--text-color); 
+            background-color: var(--bg-color); 
+        }
+
+        h1, h2, h3, .logo { font-family: "Songti SC", "SimSun", serif; margin: 0; }
+        a { text-decoration: none; color: inherit; }
+        
+        .container { width: 90%; max-width: 1100px; margin: auto; }
+
+        /* --- 导航 --- */
+        header { background: #fff; padding: 1rem 0; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary-color); }
+        nav ul { display: flex; gap: 20px; list-style: none; padding: 0; margin: 0; }
+        
+        /* --- 海报 --- */
+        .hero {
+            padding: 120px 20px 80px;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5));
+            background-size: cover;
+            color: white;
+            position: relative;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('background.jpg') center/cover;
+            filter: blur(5px);
+            z-index: -1;
+        }
+        .hero h1 { font-size: 2rem; margin-bottom: 15px; }
+        .btn { background: var(--primary-color); color: white; padding: 12px 30px; border-radius: 50px; font-weight: bold; display: inline-block; margin-top: 20px; }
+
+        /* --- 图片版菜单 (核心修改) --- */
+        .menu-section { padding: 60px 0; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 40px; }
+        
+        .menu-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 40px; 
+        }
+
+        .menu-card {
+            position: relative; /* 关键：让文字可以绝对定位在图片上 */
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            height: 400px; /* 固定高度，保证整齐 */
+        }
+        
+        .menu-card:hover { transform: scale(1.02); }
+
+        .menu-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 关键：图片填满容器且不变形 */
+        }
+
+        .menu-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); /* 底部黑色渐变遮罩，保证文字看清 */
+            padding: 30px 20px 20px;
+            color: white;
+        }
+
+        .menu-overlay h3 { font-size: 1.5rem; margin-bottom: 5px; }
+        .menu-overlay p { font-size: 0.9rem; opacity: 0.9; margin-bottom: 10px; }
+        .price { color: #f39c12; font-size: 1.3rem; font-weight: bold; }
+
+        /* --- 特色 --- */
+        .features { background: #fff; padding: 60px 0; text-align: center; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; }
+        .feature-img { width: 100%; max-width: 140px; height: auto; margin: 0 auto 15px; display: block; border-radius: 16px; object-fit: cover; }
+
+        /* --- 底部 --- */
+        .info-section { background: #2c3e50; color: white; padding: 60px 0; text-align: center; }
+        .info-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 40px; margin-top: 30px; }
+        .info-item { flex: 1; min-width: 250px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 10px; }
+
+        /* --- 分页 --- */
+        .pagination {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .pagination button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .pagination button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .pagination span {
+            font-size: 1rem;
+            margin: 0 20px;
+        }
+
+        /* --- 手机端按键和布局优化 --- */
+        @media (max-width: 600px) {
+            /* 隐藏上方的每页显示 / 跳转控件，避免界面杂乱 */
+            .menu-controls { display: none; }
+
+            /* 保持分页在内容流中（非固定），放在列表下方 */
+            .pagination {
+                position: static;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+                padding: 12px 0;
+                margin-top: 18px;
+                background: transparent;
+                box-shadow: none;
+                z-index: auto;
+            }
+
+            .pagination button {
+                padding: 10px 14px;
+                margin: 0 6px;
+                border-radius: 8px;
+                font-size: 1rem;
+            }
+
+            .pagination span {
+                font-size: 0.95rem;
+                white-space: nowrap;
+            }
+
+            /* 让 hero 的按钮在手机上更容易点击 */
+            .hero .btn { padding: 14px 22px; font-size: 1rem; border-radius: 12px; }
+
+            /* 卡片高度在小屏上略降，利于可视化 */
+            .menu-card { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-flex">
+            <div class="logo">🥢 顺德菜馆</div>
+            <nav><ul><li><a href="#home">首页</a></li><li><a href="#menu">必点菜</a></li><li><a href="#info">导航</a></li></ul></nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>食在顺德，味在华盖路</h1>
+            <p>地道顺德风味 · 鲜味十足</p>
+            <a href="#menu" class="btn">查看招牌菜</a>
+        </div>
+    </section>
+
+    <!-- 图片版菜单 (数据驱动分页) -->
+    <section id="menu" class="menu-section">
+        <div class="container">
+            <h2 class="section-title">招牌必点</h2>
+
+            <div class="menu-controls" style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+                <div>
+                    每页显示: 
+                    <select id="items-per-page">
+                        <option value="3">3</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+                <div>
+                    跳转到第 <input id="jump-page" type="number" min="1" style="width:60px"> 页
+                    <button id="jump-btn">跳转</button>
+                </div>
+            </div>
+
+            <div class="menu-grid" id="menu-grid"></div>
+
+            <!-- 分页控件 -->
+            <div class="pagination">
+                <button id="prev-btn" onclick="changePage(-1)">上一页</button>
+                <span id="page-info">第 1 页 / 共 1 页</span>
+                <button id="next-btn" onclick="changePage(1)">下一页</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">老饕推荐</h2>
+            <div class="feature-grid">
+                <div><img src="doupi.jpg" alt="双皮奶" class="feature-img"><h3>双皮奶</h3></div>
+                <div><img src="lengjiaogao.jpg" alt="伦教糕" class="feature-img"><h3>伦教糕</h3></div>
+                <div><img src="chencunfen.jpg" alt="陈村粉" class="feature-img"><h3>陈村粉</h3></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="info" class="info-section">
+        <div class="container">
+            <h2 class="section-title" style="color:white;">探店指南</h2>
+            <div class="info-grid">
+                <div class="info-item"><h3>📍 地址</h3><p>佛山市顺德区大良华盖路49号   地铁三号线钟楼公园e出口</p></div>
+                <div class="info-item"><h3>⏰ 时间</h3><p>9:00 - 22:30</p></div>
+                <div class="info-item"><h3>📞 联系</h3><p>陈先生 137-0234-1889</p></div>
+            </div>
+        </div>
+    </section>
+    <!-- 会员收录表单 -->
+    <section id="membership" style="background:#fff; padding:40px 0;">
+        <div class="container">
+            <h2 class="section-title">成为会员</h2>
+            <p style="text-align:center; max-width:720px; margin:0 auto 20px;">填写信息加入会员，可享优惠与活动通知。</p>
+            <form id="member-form" style="max-width:720px;margin:0 auto;display:grid;gap:12px;">
+                <input type="text" id="m-name" placeholder="姓名" required style="padding:10px;border-radius:6px;border:1px solid #ddd;" />
+                <input type="email" id="m-email" placeholder="邮箱" required style="padding:10px;border-radius:6px;border:1px solid #ddd;" />
+                <input type="tel" id="m-phone" placeholder="电话（可选）" style="padding:10px;border-radius:6px;border:1px solid #ddd;" />
+                <textarea id="m-note" placeholder="备注（可选）" rows="3" style="padding:10px;border-radius:6px;border:1px solid #ddd;"></textarea>
+                <div style="display:flex;gap:12px;align-items:center;">
+                    <button id="member-submit" class="btn" type="submit">提交并成为会员</button>
+                    <span id="member-status" style="color:green;"></span>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer><p style="text-align:center; padding: 20px; color:#888;">© 2026 顺德菜馆</p></footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dishes = [
+                {img:'fish.jpg', title:'顺德鱼生', desc:'晶莹剔透，佐以柠檬叶、蒜片等十几种配料，口感丰富，鲜甜爽滑。', price:'¥48'},
+                {img:'chicken.jpg', title:'招牌桑拿鸡', desc:'现切现蒸，保留鸡肉原汁原味，皮爽肉滑，鲜嫩多汁。', price:'¥48 起'},
+                {img:'cold_mixed_fish_skin.jpg', title:'凉拌鱼皮', desc:'爽脆可口，秘制酱汁调味，花生米香脆，开胃首选。', price:'¥28'},
+                {img:'doupi.jpg', title:'双皮奶', desc:'顺德传统甜品，口感细腻，香甜可口。', price:'¥13'},
+                {img:'lengjiaogao.jpg', title:'伦教糕', desc:'顺德特色小吃，软糯香甜，回味无穷。', price:'¥30'},
+                {img:'chencunfen.jpg', title:'陈村粉', desc:'顺德地道美食，粉条滑嫩，汤汁鲜美。', price:'¥25'},
+            ];
+
+            let currentPage = 1;
+            const menuGrid = document.getElementById('menu-grid');
+            const pageInfo = document.getElementById('page-info');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const itemsPerPageSelect = document.getElementById('items-per-page');
+            const jumpInput = document.getElementById('jump-page');
+            const jumpBtn = document.getElementById('jump-btn');
+
+            function render() {
+                const itemsPerPage = parseInt(itemsPerPageSelect.value, 10) || 3;
+                const totalPages = Math.max(1, Math.ceil(dishes.length / itemsPerPage));
+                if (currentPage > totalPages) currentPage = totalPages;
+
+                const start = (currentPage - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const pageItems = dishes.slice(start, end);
+
+                menuGrid.innerHTML = pageItems.map(d => `\n                    <div class="menu-card">\n                        <img src="${d.img}" alt="${d.title}" class="menu-img">\n                        <div class="menu-overlay">\n                            <h3>${d.title}</h3>\n                            <p>${d.desc}</p>\n                            <span class="price">${d.price}</span>\n                        </div>\n                    </div>\n                `).join('');
+
+                pageInfo.textContent = `第 ${currentPage} 页 / 共 ${totalPages} 页`;
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+                jumpInput.max = totalPages;
+            }
+
+            window.changePage = function(direction) {
+                const itemsPerPage = parseInt(itemsPerPageSelect.value, 10) || 3;
+                const totalPages = Math.max(1, Math.ceil(dishes.length / itemsPerPage));
+                currentPage += direction;
+                if (currentPage < 1) currentPage = 1;
+                if (currentPage > totalPages) currentPage = totalPages;
+                render();
+            };
+
+            jumpBtn.addEventListener('click', () => {
+                const v = parseInt(jumpInput.value, 10);
+                if (!v) return;
+                currentPage = v;
+                render();
+            });
+
+            itemsPerPageSelect.addEventListener('change', () => {
+                currentPage = 1;
+                render();
+            });
+
+            render();
+        });
+    </script>
+
+    <script>
+        // 会员表单提交逻辑（改为本地 API）
+        (function(){
+            const form = document.getElementById('member-form');
+            const statusEl = document.getElementById('member-status');
+
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                statusEl.textContent = '';
+                const name = document.getElementById('m-name').value.trim();
+                const email = document.getElementById('m-email').value.trim();
+                const phone = document.getElementById('m-phone').value.trim();
+                const note = document.getElementById('m-note').value.trim();
+
+                if (!name || !email) {
+                    statusEl.style.color = 'red';
+                    statusEl.textContent = '请填写姓名与邮箱。';
+                    return;
+                }
+
+                try {
+                    const res = await fetch('/api/members', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, phone, note })
+                    });
+
+                    if (!res.ok) throw new Error('网络错误');
+
+                    const data = await res.json();
+                    statusEl.style.color = 'green';
+                    statusEl.textContent = '已成功加入会员！ID: ' + data.id;
+                    form.reset();
+                } catch (err) {
+                    statusEl.style.color = 'red';
+                    statusEl.textContent = '提交失败，请稍后重试。';
+                    console.error(err);
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>

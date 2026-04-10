@@ -229,10 +229,27 @@
         <div class="container">
             <h2 class="section-title" style="color:white;">探店指南</h2>
             <div class="info-grid">
-                <div class="info-item"><h3>📍 地址</h3><p>佛山市顺德区大良华盖路49号 地铁三号线钟楼公园e出口</p></div>
+                <div class="info-item"><h3>📍 地址</h3><p>佛山市顺德区大良华盖路49号   地铁三号线钟楼公园e出口</p></div>
                 <div class="info-item"><h3>⏰ 时间</h3><p>9:00 - 22:30</p></div>
                 <div class="info-item"><h3>📞 联系</h3><p>陈先生 137-0234-1889</p></div>
             </div>
+        </div>
+    </section>
+    <!-- 会员收录表单 -->
+    <section id="membership" style="background:#fff; padding:40px 0;">
+        <div class="container">
+            <h2 class="section-title">成为会员</h2>
+            <p style="text-align:center; max-width:720px; margin:0 auto 20px;">填写信息加入会员，可享优惠与活动通知。</p>
+            <form id="member-form" style="max-width:720px;margin:0 auto;display:grid;gap:12px;">
+                <input type="text" id="m-name" placeholder="姓名" required style="padding:10px;border-radius:6px;border:1px solid #ddd;" />
+                <input type="email" id="m-email" placeholder="邮箱" required style="padding:10px;border-radius:6px;border:1px solid #ddd;" />
+                <input type="tel" id="m-phone" placeholder="电话（可选）" style="padding:10px;border-radius:6px;border:1px solid #ddd;" />
+                <textarea id="m-note" placeholder="备注（可选）" rows="3" style="padding:10px;border-radius:6px;border:1px solid #ddd;"></textarea>
+                <div style="display:flex;gap:12px;align-items:center;">
+                    <button id="member-submit" class="btn" type="submit">提交并成为会员</button>
+                    <span id="member-status" style="color:green;"></span>
+                </div>
+            </form>
         </div>
     </section>
 
@@ -300,6 +317,50 @@
             // 初始化
             render();
         });
+    </script>
+
+    <script>
+        // 会员表单提交逻辑
+        (function(){
+            const form = document.getElementById('member-form');
+            const statusEl = document.getElementById('member-status');
+
+            if (!form) return;
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                statusEl.textContent = '';
+                const name = document.getElementById('m-name').value.trim();
+                const email = document.getElementById('m-email').value.trim();
+                const phone = document.getElementById('m-phone').value.trim();
+                const note = document.getElementById('m-note').value.trim();
+
+                if (!name || !email) {
+                    statusEl.style.color = 'red';
+                    statusEl.textContent = '请填写姓名与邮箱。';
+                    return;
+                }
+
+                try {
+                    const res = await fetch('https://achen2941-commits.github.io/-5-/api/members', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, email, phone, note })
+                    });
+
+                    if (!res.ok) throw new Error('网络错误');
+
+                    const data = await res.json();
+                    statusEl.style.color = 'green';
+                    statusEl.textContent = '已成功加入会员！ID: ' + data.id;
+                    form.reset();
+                } catch (err) {
+                    statusEl.style.color = 'red';
+                    statusEl.textContent = '提交失败，请稍后重试。';
+                    console.error(err);
+                }
+            });
+        })();
     </script>
 
 </body>
